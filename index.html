@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Для Мархи ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(145deg, #fce4ec, #f8bbd0, #fce4ec);
+      background-size: 200% 200%;
+      animation: bgShift 15s ease infinite;
+      font-family: 'Inter', sans-serif;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ===== Плавающие сердечки и лепестки на фоне ===== */
+    .floating-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .float-item {
+      position: absolute;
+      bottom: -60px;
+      font-size: 1.5rem;
+      opacity: 0;
+      animation: floatUp linear infinite;
+      user-select: none;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.7; }
+      100% {
+        transform: translateY(-110vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* ===== Контейнер с открыткой ===== */
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(14px);
+      border-radius: 56px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.05);
+      padding: 30px 25px 40px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* ===== Мерцающие искорки вокруг карточки ===== */
+    .sparkle {
+      position: absolute;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      animation: sparkle 2.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .sparkle:nth-child(1) { top: 8%; left: 6%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 15%; right: 8%; animation-delay: 0.6s; }
+    .sparkle:nth-child(3) { bottom: 20%; left: 5%; animation-delay: 1.2s; }
+    .sparkle:nth-child(4) { bottom: 10%; right: 7%; animation-delay: 1.8s; }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(0.6) rotate(0deg); opacity: 0.2; }
+      50% { transform: scale(1.2) rotate(20deg); opacity: 1; }
+    }
+
+    /* ===== Имя с эффектом печатной машинки ===== */
+    .greeting {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.2rem;
+      color: #880e4f;
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 8px rgba(136, 14, 79, 0.2);
+      letter-spacing: 2px;
+      word-break: break-word;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #880e4f;
+      display: inline-block;
+      width: 0;
+      animation: typing 1.8s steps(6, end) 0.3s forwards,
+                 blink 0.8s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .sub-greeting {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: #6a1b3a;
+      margin-bottom: 25px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 2s forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 0.85; transform: translateY(0); }
+    }
+
+    /* ===== Разделитель ===== */
+    .divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin: 10px 0 20px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 2.2s forwards;
+    }
+    .divider-line {
+      height: 2px;
+      width: 30%;
+      background: linear-gradient(90deg, transparent, #c2185b, transparent);
+    }
+    .divider-heart {
+      color: #c2185b;
+      font-size: 1.8rem;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    /* ===== Текст послания ===== */
+    .message {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #3e1a2b;
+      font-weight: 400;
+      padding: 10px 8px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      margin: 18px 0 25px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      opacity: 0;
+      animation: fadeInUp 1s ease 2.4s forwards;
+    }
+    .message p {
+      margin: 12px 0;
+    }
+    .message .highlight {
+      font-weight: 600;
+      color: #880e4f;
+      position: relative;
+      display: inline-block;
+    }
+    .message .highlight::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #c2185b, transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: underline 0.6s ease 3.2s forwards;
+    }
+    @keyframes underline {
+      to { transform: scaleX(1); }
+    }
+
+    /* ===== Кнопка с сюрпризом ===== */
+    .surprise-btn {
+      background: linear-gradient(145deg, #d81b60, #ad1457);
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin: 18px 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 3s forwards;
+    }
+    .surprise-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.6s ease;
+    }
+    .surprise-btn:hover::before {
+      left: 100%;
+    }
+    .surprise-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 28px rgba(216, 27, 96, 0.6);
+      background: linear-gradient(145deg, #e91e63, #880e4f);
+    }
+    .surprise-btn:active {
+      transform: scale(0.96);
+    }
+    .surprise-btn .gift-icon {
+      display: inline-block;
+      animation: wiggle 1.5s ease-in-out infinite;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-12deg); }
+      75% { transform: rotate(12deg); }
+    }
+
+    /* ===== Скрытый блок с сюрпризом ===== */
+    .surprise-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, margin 0.3s, padding 0.3s;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      border-radius: 48px;
+      padding: 0 18px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 0 20px rgba(136, 14, 79, 0.05);
+    }
+    .surprise-content.open {
+      max-height: 700px;
+      opacity: 1;
+      padding: 25px 18px 30px;
+      margin-top: 25px;
+    }
+    .surprise-content p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #3e1a2b;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+    .surprise-content .big-heart {
+      font-size: 3.4rem;
+      display: block;
+      margin: 10px 0 5px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    .surprise-content.open p {
+      animation: fadeInUp 0.6s ease forwards;
+      opacity: 0;
+    }
+    .surprise-content.open p:nth-child(2) { animation-delay: 0.2s; }
+    .surprise-content.open p:nth-child(3) { animation-delay: 0.4s; }
+    .surprise-content.open p:nth-child(4) { animation-delay: 0.6s; }
+    .surprise-content.open p:nth-child(6) { animation-delay: 0.8s; }
+
+    /* ===== Цветочки внизу ===== */
+    .flower-deco {
+      font-size: 1.2rem;
+      opacity: 0.5;
+      letter-spacing: 8px;
+      margin: 15px 0 5px;
+      user-select: none;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease 3.4s forwards;
+    }
+    .flower-deco span {
+      display: inline-block;
+      animation: flowerWave 2s ease-in-out infinite;
+    }
+    .flower-deco span:nth-child(1) { animation-delay: 0s; }
+    .flower-deco span:nth-child(2) { animation-delay: 0.2s; }
+    .flower-deco span:nth-child(3) { animation-delay: 0.4s; }
+    .flower-deco span:nth-child(4) { animation-delay: 0.6s; }
+    .flower-deco span:nth-child(5) { animation-delay: 0.8s; }
+    @keyframes flowerWave {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(10deg); }
+    }
+
+    /* ===== Взрыв сердечек при клике ===== */
+    .heart-burst {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.5rem;
+      z-index: 9999;
+      animation: burst 1.2s ease-out forwards;
+    }
+    @keyframes burst {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.4) rotate(var(--rot));
+        opacity: 0;
+      }
+    }
+
+    /* ===== Конфетти ===== */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -20px;
+      z-index: 9998;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* ===== Адаптация ===== */
+    @media (max-width: 400px) {
+      .greeting { font-size: 2.6rem; }
+      .message { font-size: 0.95rem; padding: 12px 6px; }
+      .surprise-btn { font-size: 0.95rem; padding: 12px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Фоновые плавающие элементы -->
+  <div class="floating-bg" id="floatingBg"></div>
+
+  <div class="card" id="mainCard">
+
+    <!-- Мерцающие искорки -->
+    <span class="sparkle">✨</span>
+    <span class="sparkle">💫</span>
+    <span class="sparkle">✨</span>
+    <span class="sparkle">💫</span>
+
+    <!-- Имя -->
+    <div class="greeting">Марха</div>
+    <div class="sub-greeting">просто так, для тебя</div>
+
+    <div class="divider">
+      <span class="divider-line"></span>
+      <span class="divider-heart">❤️</span>
+      <span class="divider-line"></span>
+    </div>
+
+    <!-- Послание без повода -->
+    <div class="message">
+      <p>🌷 Это не праздник и не особая дата —</p>
+      <p>просто захотелось сказать тебе <span class="highlight">важное</span>.</p>
+      <p>Ты — <span class="highlight">самая нежная</span> и <span class="highlight">самая родная</span>.</p>
+      <p>С тобой даже обычные дни становятся <br> <span class="highlight">теплее и светлее</span>.</p>
+      <p style="margin-top: 10px; font-size: 0.95rem; opacity: 0.7;">✨ Я бесконечно тобой вдохновлён ✨</p>
+    </div>
+
+    <!-- Кнопка с сюрпризом -->
+    <button class="surprise-btn" id="surpriseToggle">
+      <span class="gift-icon">🎁</span> Открой сюрприз
+    </button>
+
+    <!-- Скрытый блок -->
+    <div class="surprise-content" id="surpriseBlock">
+      <span class="big-heart">💖</span>
+      <p style="font-weight: 500; color: #880e4f;">Ты — моё самое тёплое воспоминание и моё самое светлое будущее.</p>
+      <p>Спасибо, что ты есть. За твой смех, за твой голос, за то, как ты смотришь на мир.</p>
+      <p>🌺 <strong>Я люблю тебя</strong> 🌺</p>
+      <div style="font-size: 2.2rem; margin: 8px 0;">❤️‍🔥</div>
+      <p style="font-size: 0.9rem; opacity: 0.6; letter-spacing: 2px;">твой человек</p>
+    </div>
+
+    <!-- Декоративные цветочки -->
+    <div class="flower-deco">
+      <span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span>
+    </div>
+
+  </div>
+
+  <script>
+    (function() {
+      // ========== ПЛАВАЮЩИЕ ЭЛЕМЕНТЫ НА ФОНЕ ==========
+      const bg = document.getElementById('floatingBg');
+      const items = ['❤️', '💖', '🌸', '💕', '🌷', '✨', '💗', '🌺'];
+      const COUNT = 18;
+
+      for (let i = 0; i < COUNT; i++) {
+        const el = document.createElement('span');
+        el.className = 'float-item';
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.style.left = Math.random() * 100 + '%';
+        el.style.fontSize = (0.9 + Math.random() * 1.6) + 'rem';
+        el.style.animationDuration = (10 + Math.random() * 12) + 's';
+        el.style.animationDelay = (Math.random() * 12) + 's';
+        bg.appendChild(el);
+      }
+
+      // ========== ВЗРЫВ СЕРДЕЧЕК ПРИ КЛИКЕ ==========
+      function heartBurst(x, y) {
+        const hearts = ['❤️', '💖', '💕', '💗', '💓', '✨'];
+        for (let i = 0; i < 12; i++) {
+          const h = document.createElement('span');
+          h.className = 'heart-burst';
+          h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+          h.style.left = x + 'px';
+          h.style.top = y + 'px';
+          const angle = (Math.PI * 2 * i) / 12 + Math.random() * 0.5;
+          const dist = 80 + Math.random() * 120;
+          h.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+          h.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+          h.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+          document.body.appendChild(h);
+          setTimeout(() => h.remove(), 1300);
+        }
+      }
+
+      // ========== КОНФЕТТИ ==========
+      function launchConfetti() {
+        const colors = ['#d81b60', '#e91e63', '#f06292', '#f8bbd0', '#ff80ab', '#ad1457', '#ffd54f', '#fff59d'];
+        for (let i = 0; i < 40; i++) {
+          const c = document.createElement('div');
+          c.className = 'confetti';
+          c.style.left = Math.random() * 100 + 'vw';
+          c.style.background = colors[Math.floor(Math.random() * colors.length)];
+          c.style.width = (6 + Math.random() * 8) + 'px';
+          c.style.height = (6 + Math.random() * 8) + 'px';
+          c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+          c.style.animationDuration = (2 + Math.random() * 2) + 's';
+          c.style.animationDelay = (Math.random() * 0.6) + 's';
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 4500);
+        }
+      }
+
+      // ========== УПРАВЛЕНИЕ СЮРПРИЗОМ ==========
+      const toggleBtn = document.getElementById('surpriseToggle');
+      const surpriseBlock = document.getElementById('surpriseBlock');
+
+      if (toggleBtn && surpriseBlock) {
+        let isOpen = false;
+        toggleBtn.addEventListener('click', function(e) {
+          isOpen = !isOpen;
+          surpriseBlock.classList.toggle('open', isOpen);
+          toggleBtn.innerHTML = isOpen
+            ? '<span class="gift-icon">💝</span> Скрыть сюрприз'
+            : '<span class="gift-icon">🎁</span> Открой сюрприз';
+
+          // Взрыв сердечек в месте клика
+          const rect = toggleBtn.getBoundingClientRect();
+          heartBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+          // Конфетти при открытии
+          if (isOpen) {
+            launchConfetti();
+          }
+        });
+      }
+
+      console.log('❤️ Открытка для Мархи всегда доступна.');
+    })();
+  </script>
+
+</body>
+</html>
